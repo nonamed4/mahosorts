@@ -1,5 +1,5 @@
 # mahosorts
-Trying to make a faster sorting algorithm.
+Trying to make faster sorting algorithms.
 
 ## Mahosort on four:
 "Mahosort on four" is a merge-sort like sorting algorithm that is slightly faster than merge-sort when sorting small vectors. 
@@ -54,10 +54,48 @@ Here is how it works:
 >
 > _slice[4*i+3]_ = _max2_
 >
-> 
 > Step 5: _slice[4*i+1]_ and _slice[4*i+2]_ is still not sorted. _slice[4*i+1]_ has to be smaller than _slice[4*i+2]_ so:
 > 
 > _slice[4*i+1]_ = min(_min2_, _max1_)
 > 
 > _slice[4*i+2]_ = min(_min2_, _max1_)
+
+If slice.len() mod 4 != 0, ignores the other elements. (last _slice.len() mod 4_ elements.)
+
+### pub fn four_merge<T: Ord + Copy>(vector: &mut Vec<T>, values: [T; 4]) -> ()
+
+Both _vector_ and _values_ must be sorted before.
+
+Merges _vector_ and _values_.
+
+Here is how it works:
+
+> Step 1: We call binary search on _vector_ with _values[0]_, then insert _values[0]_. This is our left limit (_rl_).
+>
+> We can increase _rl_ by one, because it is the smallest value.
+>
+> Step 2: We do the same to _values[3]_. This is our right limit (_rr_).
+>
+> Step 3: We basically do binary search here.
+
+### pub fn mahosort_on_four<T: Ord + Copy>(vector: &mut Vec<T>) -> ()
+
+Sorts the slice in an O(n log n) time complexity algorithm.
+
+Here is how it works:
+
+> Step 1: We call _sort_on_fours_ on vector.
 > 
+> Step 2: We create a vector: _dummy_ to store sorted vector.
+>
+> Step 3: We have a pointer called _i_ in range 0 and _vector.len()/4_.
+>
+> Step 4: We call _four_merge_ with _dummy_ and _vector[4*i]_, _vector[4*i+1]_, _vector[4*i+2]_, _vector[4*i+3]_.
+>
+> If vector.len() mod 4 != 0, we add last _vector.len() mod 4_ elements with binary search.
+
+
+
+
+
+
